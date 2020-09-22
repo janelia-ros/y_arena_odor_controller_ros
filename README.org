@@ -1,0 +1,36 @@
+#+TITLE: y_arena_controller_ros
+#+AUTHOR: Peter Polidoro
+#+EMAIL: peterpolidoro@gmail.com
+
+* Repository Information
+  - Author :: Peter Polidoro
+  - License :: BSD
+
+* Raspberry Pi Setup
+
+** SSH into Raspberry Pi
+
+   #+BEGIN_SRC sh
+     ssh ubuntu@ubuntu
+   #+END_SRC
+
+*** If 'No route to host' error:
+
+    #+BEGIN_SRC sh
+      ip addr
+      # find ip addresses of various ip links on the host computer
+      # e.g. 192.168.1.117
+      nmap -p22 --open -sV 192.168.1.0/24
+      ssh ubuntu@192.168.1.77
+      # e.g. 10.42.0.1
+      nmap -p22 --open -sV 10.42.0.0/24
+      ssh ubuntu@10.42.0.192
+    #+END_SRC
+
+*** Setup udev rules for Teensy Connection
+
+    #+BEGIN_SRC sh
+      sudo wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/janelia-ros/y_arena_controller_ros/master/udev/99-y-arena.rules
+    #+END_SRC
+
+    #+RESULTS:
