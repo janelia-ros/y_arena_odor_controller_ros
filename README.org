@@ -6,6 +6,12 @@
   - Author :: Peter Polidoro
   - License :: BSD
 
+* Running
+
+   #+BEGIN_SRC sh
+     docker build -t my/ros:app .
+   #+END_SRC
+
 * Raspberry Pi Setup
 
 ** SSH into Raspberry Pi
@@ -32,5 +38,3 @@
     #+BEGIN_SRC sh
       sudo wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/janelia-ros/y_arena_controller_ros/master/udev/99-y-arena.rules
     #+END_SRC
-
-    #+RESULTS:
