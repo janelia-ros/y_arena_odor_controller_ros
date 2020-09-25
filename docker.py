@@ -15,7 +15,7 @@ class Docker(object):
             print(args)
 
     def run(self):
-        docker_command = ['docker','run','-v','/dev/arena:/dev/arena','-it']
+        docker_command = ['docker','run','-v','/dev/arena:/dev/arena','--rm']
         devs = sorted(Path('/dev').glob('ttyACM*'))
         devs_command = ['--device={0}:{0}'.format(dev) for dev in devs]
         docker_command.extend(devs_command)

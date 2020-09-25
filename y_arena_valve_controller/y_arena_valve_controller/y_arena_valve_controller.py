@@ -28,12 +28,16 @@
 import rclpy
 from rclpy.node import Node
 
+from pathlib import Path
+from modular_client import ModularClientsList
 
 class YArenaValveController(Node):
 
     def __init__(self):
         super().__init__('y_arena_valve_controller')
-
+        arena_dev_paths = sorted(Path('/dev/arena').glob('*'))
+        arena_dev_ports = [str(p) for p in arena_dev_paths]
+        self.devs = ModularClientsList(arena_dev_ports)
 
 def main(args=None):
     rclpy.init(args=args)

@@ -49,4 +49,4 @@ RUN sed --in-place --expression \
       /ros_entrypoint.sh
 
 # run launch file
-# CMD ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]
+CMD ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]

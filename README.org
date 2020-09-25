@@ -8,12 +8,40 @@
 
   Valve controller software for the Turner Lab Y-Arena rig.
 
-* Running
+* Build Software Into Docker Image
 
-   #+BEGIN_SRC sh
-     docker build -t yarenavalvecontroller:0.1.0 .
-     python3 docker.py
-   #+END_SRC
+  #+BEGIN_SRC sh
+    docker system prune
+    docker build -t yarenavalvecontroller:0.1.0 .
+    python3 docker.py
+  #+END_SRC
+
+* Run Docker Image
+
+  #+BEGIN_SRC sh
+    python3 docker.py
+  #+END_SRC
+
+* Find Running Container Name
+
+  #+BEGIN_SRC sh
+    docker ps
+  #+END_SRC
+
+* Stop Docker Container
+
+  #+BEGIN_SRC sh
+    docker stop <container name>
+  #+END_SRC
+
+
+* Run Bash Commands in Container
+
+  #+BEGIN_SRC sh
+    docker exec -it <container name> /bin/bash
+    source install/setup.bash
+    ros2 node list
+  #+END_SRC
 
 * Raspberry Pi Setup
 
