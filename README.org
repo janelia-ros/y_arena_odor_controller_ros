@@ -6,6 +6,8 @@
   - Author :: Peter Polidoro
   - License :: BSD
 
+  Valve controller software for the Turner Lab Y-Arena rig.
+
 * Running
 
    #+BEGIN_SRC sh
