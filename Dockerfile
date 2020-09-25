@@ -1,12 +1,53 @@
-FROM ros:dashing-ros-base
+ARG OVERLAY_REPOSITORY=y_arena_valve_controller_ros
+ARG FROM_IMAGE=ros:dashing
+ARG OVERLAY_WS=/opt/ros/overlay_ws
 
-# Create ROS workspace
-COPY . /ws/src/y_arena_valve_controller
-WORKDIR /ws
+# multi-stage for caching
+FROM $FROM_IMAGE AS cacher
 
-# Use rosdep to install all dependencies
-RUN rosdep init && rosdep update && rosdep install --from-paths src -i -y --rosdistro dashing
+# copy overlay source
+ARG OVERLAY_WS
+WORKDIR $OVERLAY_WS/src
+COPY . $OVERLAY_REPOSITORY
 
-RUN /bin/bash -c "source /opt/ros/dashing/setup.bash && \
-    colcon build --parallel-workers 1 && \
-    colcon test --parallel-workers 1"
+# copy manifests for caching
+WORKDIR /opt
+RUN mkdir -p /tmp/opt && \
+    find ./ -name "package.xml" | \
+      xargs -I '{}' cp '{}' --parents -t /tmp/opt && \
+    find ./ -name "requirements.txt" | \
+      xargs -I '{}' cp '{}' --parents -t /tmp/opt && \
+    find ./ -name "COLCON_IGNORE" | \
+      xargs -I '{}' cp '{}' --parents -t /tmp/opt || true
+
+# multi-stage for building
+FROM $FROM_IMAGE AS builder
+
+# install overlay dependencies
+ARG OVERLAY_REPOSITORY
+ARG OVERLAY_WS
+WORKDIR $OVERLAY_WS
+COPY --from=cacher /tmp/$OVERLAY_WS/src ./src
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    apt-get update && \
+    apt-get install -y \
+        python3-pip && \
+    pip3 install -r ./src/requirements.txt && \
+    rosdep install -y \
+      --from-paths \
+        src \
+    && rm -rf /var/lib/apt/lists/*
+
+# build overlay source
+COPY --from=cacher $OVERLAY_WS/src ./src
+RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
+    colcon build
+
+# source entrypoint setup
+ENV OVERLAY_WS $OVERLAY_WS
+RUN sed --in-place --expression \
+      '$isource "$OVERLAY_WS/install/setup.bash"' \
+      /ros_entrypoint.sh
+
+# run launch file
+# CMD ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]

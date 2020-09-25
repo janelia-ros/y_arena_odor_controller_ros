@@ -9,7 +9,23 @@
 * Running
 
    #+BEGIN_SRC sh
-     docker build -t my/ros:app .
+     docker build -t yarenavalvecontroller:0.1.0 .
+     python3 docker.py
+   #+END_SRC
+
+* Development
+
+   #+BEGIN_SRC sh
+     docker system prune -a
+     docker create -it --name devel ros:dashing bash
+     docker start -i devel
+     mkdir -p /ws/src/y_arena_valve_controller
+     exit
+     docker cp . devel:/ws/src/y_arena_valve_controller
+     docker start -i devel
+     source /opt/ros/dashing/setup.bash
+     cd /ws
+     colcon build
    #+END_SRC
 
 * Raspberry Pi Setup
