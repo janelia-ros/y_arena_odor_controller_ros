@@ -1,4 +1,3 @@
-ARG OVERLAY_REPOSITORY=y_arena_valve_controller_ros
 ARG FROM_IMAGE=ros:dashing
 ARG OVERLAY_WS=/opt/ros/overlay_ws
 
@@ -8,7 +7,7 @@ FROM $FROM_IMAGE AS cacher
 # copy overlay source
 ARG OVERLAY_WS
 WORKDIR $OVERLAY_WS/src
-COPY . $OVERLAY_REPOSITORY
+COPY . .
 
 # copy manifests for caching
 WORKDIR /opt
@@ -24,7 +23,6 @@ RUN mkdir -p /tmp/opt && \
 FROM $FROM_IMAGE AS builder
 
 # install overlay dependencies
-ARG OVERLAY_REPOSITORY
 ARG OVERLAY_WS
 WORKDIR $OVERLAY_WS
 COPY --from=cacher /tmp/$OVERLAY_WS/src ./src
@@ -32,7 +30,8 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     apt-get update && \
     apt-get install -y \
         python3-pip && \
-    pip3 install -r ./src/requirements.txt && \
+    find ./ -name "requirements.txt" | \
+      xargs -I '{}' pip3 install -r '{}' && \
     rosdep install -y \
       --from-paths \
         src \

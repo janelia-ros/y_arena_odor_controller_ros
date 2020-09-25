@@ -1,4 +1,8 @@
+udev
+
+Dockerfile
 .dockerignore
+docker.py
 
 .git
 .gitignore
