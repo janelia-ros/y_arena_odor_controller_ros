@@ -8,18 +8,10 @@
 
   Valve controller software for the Turner Lab Y-Arena rig.
 
-* Build Software Into Docker Image
+* Run Docker Container
 
   #+BEGIN_SRC sh
-    docker system prune
-    docker build -t yarenavalvecontroller:0.1.0 .
-    python3 docker.py
-  #+END_SRC
-
-* Run Docker Image
-
-  #+BEGIN_SRC sh
-    python3 docker.py
+    docker-compose up
   #+END_SRC
 
 * Find Running Container Name
@@ -27,13 +19,6 @@
   #+BEGIN_SRC sh
     docker ps
   #+END_SRC
-
-* Stop Docker Container
-
-  #+BEGIN_SRC sh
-    docker stop <container name>
-  #+END_SRC
-
 
 * Run Bash Commands in Container
 
@@ -43,29 +28,33 @@
     ros2 node list
   #+END_SRC
 
+* Stop Docker Container
+
+  #+BEGIN_SRC sh
+    docker-compose stop
+  #+END_SRC
+
+* Prune Docker Images
+
+  #+BEGIN_SRC sh
+    docker system prune
+  #+END_SRC
+
 * Raspberry Pi Setup
 
-** SSH into Raspberry Pi
+** Connect to Cockpit Web Console
 
-   #+BEGIN_SRC sh
-     ssh ubuntu@ubuntu
-   #+END_SRC
+   https://ycontroller.local:9090
 
-*** If 'No route to host' error:
 
-    #+BEGIN_SRC sh
-      ip addr
-      # find ip addresses of various ip links on the host computer
-      # e.g. 192.168.1.117
-      nmap -p22 --open -sV 192.168.1.0/24
-      ssh ubuntu@192.168.1.77
-      # e.g. 10.42.0.1
-      nmap -p22 --open -sV 10.42.0.0/24
-      ssh ubuntu@10.42.0.192
-    #+END_SRC
+** Clone this repository
+
+  #+BEGIN_SRC sh
+    git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
+  #+END_SRC
 
 *** Setup udev rules for Teensy Connection
 
     #+BEGIN_SRC sh
-      sudo wget -P /etc/udev/rules.d/ https://raw.githubusercontent.com/janelia-ros/y_arena_controller_ros/master/udev/99-y-arena.rules
+      git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
     #+END_SRC

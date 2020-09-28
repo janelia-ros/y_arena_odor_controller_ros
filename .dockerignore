@@ -2,7 +2,7 @@ udev
 
 Dockerfile
 .dockerignore
-docker.py
+docker-compose.yml
 
 .git
 .gitignore

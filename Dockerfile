@@ -47,6 +47,3 @@ ENV OVERLAY_WS $OVERLAY_WS
 RUN sed --in-place --expression \
       '$isource "$OVERLAY_WS/install/setup.bash"' \
       /ros_entrypoint.sh
-
-# run launch file
-CMD ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]
