@@ -11,7 +11,7 @@
 * Run Docker Container
 
   #+BEGIN_SRC sh
-    docker-compose up
+    docker-compose up -d
   #+END_SRC
 
 * Find Running Container Name
@@ -56,5 +56,5 @@
 *** Setup udev rules for Teensy Connection
 
     #+BEGIN_SRC sh
-      git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
+      sudo cp y_arena_valve_controller_ros/udev/* /etc/udev/rules.d/
     #+END_SRC
