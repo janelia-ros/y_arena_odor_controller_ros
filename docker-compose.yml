@@ -23,4 +23,5 @@ services:
       - "/dev/ttyACM15:/dev/ttyACM15"
     volumes:
       - "/dev/arena:/dev/arena"
+    restart: unless-stopped
     command: ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]
