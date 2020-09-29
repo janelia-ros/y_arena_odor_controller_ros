@@ -1,9 +1,9 @@
-etc
+piroot
+pisetup.py
 
 Dockerfile
 .dockerignore
 docker-compose.yml
-pisetup.py
 
 .git
 .gitignore

@@ -8,10 +8,14 @@
 
   Valve controller software for the Turner Lab Y-Arena rig.
 
+* Connect to Cockpit Web Console
+
+  https://ycontroller.local:9090
+
 * Run Docker Container
 
   #+BEGIN_SRC sh
-    docker-compose up -d
+    docker-compose-up
   #+END_SRC
 
 * Find Running Container Name
@@ -31,7 +35,7 @@
 * Stop Docker Container
 
   #+BEGIN_SRC sh
-    docker-compose stop
+    docker-compose-stop
   #+END_SRC
 
 * Prune Docker Images
@@ -42,16 +46,16 @@
 
 * Raspberry Pi Setup
 
-** Connect to Cockpit Web Console
+  https://github.com/janelia-experimental-technology/raspberrypi_setup
 
-   https://ycontroller.local:9090
-
+  - username: yuser
+  - hostname: ycontroller
 
 ** Clone this repository
 
-  #+BEGIN_SRC sh
-    git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
-  #+END_SRC
+   #+BEGIN_SRC sh
+     git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
+   #+END_SRC
 
 *** Run Setup Script
 

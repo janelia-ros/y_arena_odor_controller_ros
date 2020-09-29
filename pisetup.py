@@ -7,24 +7,30 @@ class Docker(object):
 
     def __init__(self,dry_run,*args,**kwargs):
         self.dry_run = dry_run
-        self.path = Path('etc')
+        self.root_name = 'piroot'
+        self.path = Path(self.root_name)
 
     def _output(self,args):
         print(" ".join(args))
         if not self.dry_run:
             subprocess.run(args)
 
-    def install(self):
+    def for_every_file(self,cmd_prefix,include_rel_path):
         for child in self.path.rglob('*'):
             if child.is_file():
-                cmd = ['sudo', 'cp', str(child), str('/' / child)]
+                cmd = []
+                cmd.extend(cmd_prefix)
+                if include_rel_path:
+                    cmd.append(str(child))
+                abs_path = '/' / child.relative_to(self.root_name)
+                cmd.append(str(abs_path))
                 self._output(cmd)
 
+    def install(self):
+        self.for_every_file(['sudo', 'cp'],include_rel_path=True)
+
     def uninstall(self):
-        for child in self.path.rglob('*'):
-            if child.is_file():
-                cmd = ['sudo', 'rm', str('/' / child)]
-                self._output(cmd)
+        self.for_every_file(['sudo', 'rm'],include_rel_path=False)
 
 @click.group()
 @click.option('-d','--dry-run', is_flag=True)
