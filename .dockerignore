@@ -1,8 +1,9 @@
-udev
+etc
 
 Dockerfile
 .dockerignore
 docker-compose.yml
+pisetup.py
 
 .git
 .gitignore

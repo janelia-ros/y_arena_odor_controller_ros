@@ -53,8 +53,8 @@
     git clone https://github.com/janelia-ros/y_arena_valve_controller_ros.git
   #+END_SRC
 
-*** Setup udev rules for Teensy Connection
+*** Run Setup Script
 
     #+BEGIN_SRC sh
-      sudo cp y_arena_valve_controller_ros/udev/* /etc/udev/rules.d/
+      python3 pisetup.py install
     #+END_SRC
