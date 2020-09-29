@@ -1,15 +1,15 @@
 #!/bin/bash
 
-if [[ -e "/dev/arena/0" &&
-      -e "/dev/arena/1" &&
-      -e "/dev/arena/2" &&
-      -e "/dev/arena/3" &&
-      -e "/dev/arena/4" &&
-      -e "/dev/arena/5" &&
-      -e "/dev/arena/6" &&
-      -e "/dev/arena/7" &&
-      -e "/dev/arena/8" &&
-      -e "/dev/arena/9" &&
+if [[ -e "/dev/arena/00" &&
+      -e "/dev/arena/01" &&
+      -e "/dev/arena/02" &&
+      -e "/dev/arena/03" &&
+      -e "/dev/arena/04" &&
+      -e "/dev/arena/05" &&
+      -e "/dev/arena/06" &&
+      -e "/dev/arena/07" &&
+      -e "/dev/arena/08" &&
+      -e "/dev/arena/09" &&
       -e "/dev/arena/10" &&
       -e "/dev/arena/11" &&
       -e "/dev/arena/12" &&

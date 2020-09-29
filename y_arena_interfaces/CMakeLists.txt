@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(y_arena_valve_controller_interfaces)
+project(y_arena_interfaces)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
