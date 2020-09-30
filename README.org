@@ -23,6 +23,13 @@
     docker-compose-up
   #+END_SRC
 
+  If you want to run the container with less than 16 y_arena_valve_controller
+  boards connected:
+
+  #+BEGIN_SRC sh
+    python3 find_devices_then_run.py
+  #+END_SRC
+
 * Find Running Container Name
 
   #+BEGIN_SRC sh
@@ -43,10 +50,20 @@
     docker-compose-stop
   #+END_SRC
 
-* Prune Docker Images
+* Start Docker Container to Publish Test Messages
 
   #+BEGIN_SRC sh
-    docker system prune
+    docker run -it y_arena_valve_controller_ros_ycontroller
+    ros2 topic pub --once /arena_valves_on y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
+  #+END_SRC
+
+* Update Containers
+
+  #+BEGIN_SRC sh
+    cd y_arena_valve_controller_ros
+    git pull origin dashing
+    docker system prune -f
+    docker-compose build
   #+END_SRC
 
 * Raspberry Pi Setup
@@ -66,4 +83,45 @@
 
     #+BEGIN_SRC sh
       python3 pisetup.py install
+    #+END_SRC
+
+*** Development
+
+    #+BEGIN_SRC sh
+      docker system prune -f
+      docker create -it --name devel ros:dashing bash
+      docker start -i devel
+      mkdir -p /ws/src/y_arena_valve_controller
+      exit
+      docker cp . devel:/ws/src/y_arena_valve_controller
+      docker start -i devel
+      source /opt/ros/dashing/setup.bash
+      cd /ws
+      colcon build
+    #+END_SRC
+
+    #+BEGIN_SRC sh
+      docker run -v /dev/arena:/dev/arena -it --restart unless-stopped\
+             --device=/dev/ttyACM0 \
+             --device=/dev/ttyACM1 \
+             --device=/dev/ttyACM2 \
+             --device=/dev/ttyACM3 \
+             --device=/dev/ttyACM4 \
+             --device=/dev/ttyACM5 \
+             --device=/dev/ttyACM6 \
+             --device=/dev/ttyACM7 \
+             --device=/dev/ttyACM8 \
+             --device=/dev/ttyACM9 \
+             --device=/dev/ttyACM10 \
+             --device=/dev/ttyACM11 \
+             --device=/dev/ttyACM12 \
+             --device=/dev/ttyACM13 \
+             --device=/dev/ttyACM14 \
+             --device=/dev/ttyACM15 \
+             y_arena_valve_controller_ros_ycontroller \
+             ros2 launch y_arena_valve_controller controller.launch.py
+    #+END_SRC
+
+    #+BEGIN_SRC sh
+      ros2 topic pub --once /arena_valves_on y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
     #+END_SRC

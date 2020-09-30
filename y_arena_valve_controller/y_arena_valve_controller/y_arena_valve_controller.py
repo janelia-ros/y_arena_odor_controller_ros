@@ -31,7 +31,7 @@ from rclpy.node import Node
 from pathlib import Path
 from modular_client import ModularClientsList
 
-from y_arena_interfaces.msg import Valves
+from y_arena_interfaces.msg import ArenaValves
 
 class YArenaValveController(Node):
 
@@ -42,15 +42,19 @@ class YArenaValveController(Node):
         topics = [str('/' / p.relative_to('/dev') / 'valves_on') for p in arena_dev_paths]
         self.devs = ModularClientsList(arena_dev_ports)
 
-        self.valves_on_sub = self.create_subscription(
-            Valves,
-            '/arena/0/valves_on',
-            self.listener_callback,
+        self.arena_valves_on_sub = self.create_subscription(
+            ArenaValves,
+            '/arena_valves_on',
+            self.arena_valves_on_callback,
             10)
-        self.subscription
+        self.arena_valves_on_sub
 
-    def listener_callback(self, msg):
-        self.get_logger().info('I heard: "%s"' % msg.data)
+    def arena_valves_on_callback(self, msg):
+        self.get_logger().info('arena_valves_on_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
+        try:
+            self.devs[msg.arena].set_valves_on(msg.valves.tolist())
+        except (IndexError, OSError) as e:
+            pass
 
 def main(args=None):
     rclpy.init(args=args)

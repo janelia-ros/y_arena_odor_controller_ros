@@ -35,6 +35,8 @@ RUN . /opt/ros/$ROS_DISTRO/setup.sh && \
     rosdep install -y \
       --from-paths \
         src \
+      --ignore-src \
+      -r \
     && rm -rf /var/lib/apt/lists/*
 
 # build overlay source
