@@ -24,4 +24,6 @@ services:
     volumes:
       - "/dev/arena:/dev/arena"
     restart: unless-stopped
+    pid: "host"
+    network_mode: "host"
     command: ["ros2", "launch", "y_arena_valve_controller", "controller.launch.py"]

@@ -53,7 +53,7 @@
 * Start Docker Container to Publish Test Messages
 
   #+BEGIN_SRC sh
-    docker run -it y_arena_valve_controller_ros_ycontroller
+    docker run --rm --net=host --pid=host -it y_arena_valve_controller_ros_ycontroller
     ros2 topic pub --once /arena_valves_on y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
   #+END_SRC
 
