@@ -15,7 +15,9 @@ class Docker(object):
             print(" ".join(args))
 
     def run(self):
-        docker_command = ['docker','run','-v','/dev/arena:/dev/arena','--restart','unless-stopped']
+        docker_command = ['docker','run','-v','/dev/arena:/dev/arena']
+        docker_command.extend(['--restart','unless-stopped'])
+        docker_command.extend(['--pid=host','--net=host'])
         devs = sorted(Path('/dev').glob('ttyACM*'))
         devs_command = ['--device={0}'.format(dev) for dev in devs]
         docker_command.extend(devs_command)
