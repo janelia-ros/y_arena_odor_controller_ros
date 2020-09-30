@@ -50,7 +50,7 @@
     docker-compose-stop
   #+END_SRC
 
-* Start Docker Container to Publish Test Messages
+* Run Another Docker Container to Publish Test Messages
 
   #+BEGIN_SRC sh
     docker run --rm --net=host --pid=host -it y_arena_valve_controller_ros_ycontroller
