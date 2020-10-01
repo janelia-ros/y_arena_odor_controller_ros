@@ -82,7 +82,7 @@
 *** Run Setup Script
 
     #+BEGIN_SRC sh
-      python3 pisetup.py install
+      ./pisetup.py install
     #+END_SRC
 
 *** Development

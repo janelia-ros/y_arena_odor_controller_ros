@@ -1,9 +1,8 @@
 piroot
-pisetup.py
+pisetup
 
 Dockerfile
 .dockerignore
-docker-compose.yml
 
 .git
 .gitignore
