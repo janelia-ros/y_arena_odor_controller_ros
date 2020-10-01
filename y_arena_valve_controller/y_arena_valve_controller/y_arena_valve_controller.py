@@ -29,7 +29,7 @@ import rclpy
 from rclpy.node import Node
 
 from pathlib import Path
-from modular_client import ModularClientsList
+from modular_client import ModularClients
 
 from y_arena_interfaces.msg import ArenaValves
 
@@ -39,8 +39,8 @@ class YArenaValveController(Node):
         super().__init__('y_arena_valve_controller')
         arena_dev_paths = sorted(Path('/dev/arena').glob('*'))
         arena_dev_ports = [str(p) for p in arena_dev_paths]
-        topics = [str('/' / p.relative_to('/dev') / 'valves_on') for p in arena_dev_paths]
-        self.devs = ModularClientsList(arena_dev_ports)
+        arena_dev_keys = [int(p.name) for p in arena_dev_paths]
+        self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_keys)
 
         self.arena_valves_on_sub = self.create_subscription(
             ArenaValves,
