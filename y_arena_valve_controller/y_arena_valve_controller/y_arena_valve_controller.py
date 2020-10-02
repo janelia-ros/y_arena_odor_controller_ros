@@ -42,17 +42,17 @@ class YArenaValveController(Node):
         arena_dev_keys = [int(p.name) for p in arena_dev_paths]
         self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_keys)
 
-        self.arena_valves_on_sub = self.create_subscription(
+        self.arena_valves_open_sub = self.create_subscription(
             ArenaValves,
-            '/arena_valves_on',
-            self.arena_valves_on_callback,
+            '/arena_valves_open',
+            self.arena_valves_open_callback,
             10)
-        self.arena_valves_on_sub
+        self.arena_valves_open_sub
 
-    def arena_valves_on_callback(self, msg):
-        self.get_logger().info('arena_valves_on_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
+    def arena_valves_open_callback(self, msg):
+        self.get_logger().info('arena_valves_open_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
         try:
-            self.devs[msg.arena].set_valves_on(msg.valves.tolist())
+            self.devs[msg.arena].set_valves_open(msg.valves.tolist())
         except (IndexError, OSError) as e:
             pass
 
