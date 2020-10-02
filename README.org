@@ -10,20 +10,15 @@
 
 * Run Docker Container
 
-  Container starts automatically when all 16 y_arena_valve_controller boards are
-  connected with USB cables and hubs to the Raspberry Pi.
+  Make sure all arenas are connected by USB to Raspberry Pi before powering it
+  up.
 
-  If you need to want to start it manually after stopping it:
+  Container starts automatically shortly after booting the Raspberry Pi.
 
-  #+BEGIN_SRC sh
-    docker-compose-up
-  #+END_SRC
-
-  If you want to run the container with less than 16 y_arena_valve_controller
-  boards connected:
+  If you want to start the container manually after stopping it:
 
   #+BEGIN_SRC sh
-    python3 find_devices_then_run.py
+    find_devices_then_run
   #+END_SRC
 
 * Find Running Container Name
@@ -43,7 +38,7 @@
 * Stop Docker Container
 
   #+BEGIN_SRC sh
-    docker-compose-stop
+    docker stop $(docker ps -aq)
   #+END_SRC
 
 * Run Another Docker Container to Publish Test Messages
