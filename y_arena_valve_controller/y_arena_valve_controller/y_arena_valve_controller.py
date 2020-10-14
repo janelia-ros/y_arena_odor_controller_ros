@@ -32,15 +32,16 @@ from pathlib import Path
 from modular_client import ModularClients
 
 from y_arena_interfaces.msg import ArenaValves
+from y_arena_interfaces.srv import GetArenas
 
 class YArenaValveController(Node):
 
     def __init__(self):
         super().__init__('y_arena_valve_controller')
-        arena_dev_paths = sorted(Path('/dev/arena').glob('*'))
+        arena_dev_paths = self._get_arena_dev_paths()
         arena_dev_ports = [str(p) for p in arena_dev_paths]
-        arena_dev_keys = [int(p.name) for p in arena_dev_paths]
-        self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_keys)
+        arena_dev_numbers = self._get_arena_dev_numbers()
+        self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_numbers)
 
         self.arena_valves_open_sub = self.create_subscription(
             ArenaValves,
@@ -49,12 +50,25 @@ class YArenaValveController(Node):
             10)
         self.arena_valves_open_sub
 
+        self.get_arenas_available_srv = self.create_service(GetArenas, 'get_arenas_available', self.get_arenas_available_callback)
+
+    def _get_arena_dev_paths(self):
+        return sorted(Path('/dev/arena').glob('*'))
+
+    def _get_arena_dev_numbers(self):
+        arena_dev_paths = self._get_arena_dev_paths()
+        return [int(p.name) for p in arena_dev_paths]
+
     def arena_valves_open_callback(self, msg):
         self.get_logger().info('arena_valves_open_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
         try:
             self.devs[msg.arena].set_valves_open(msg.valves.tolist())
         except (IndexError, OSError) as e:
             pass
+
+    def get_arenas_available_callback(self, request, response):
+        response.arenas = self._get_arena_dev_numbers()
+        return response
 
 def main(args=None):
     rclpy.init(args=args)
