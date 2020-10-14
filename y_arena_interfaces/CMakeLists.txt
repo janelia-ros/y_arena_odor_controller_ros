@@ -24,7 +24,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/ArenaValves.msg"
-  "srv/GetArenas.msg"
+  "srv/GetArenas.srv"
  )
 
 if(BUILD_TESTING)
