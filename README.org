@@ -71,3 +71,19 @@
     ros2 topic pub --once /arena_valves_open y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
     ros2 service call /get_arenas_available y_arena_interfaces/srv/GetArenas
   #+END_SRC
+
+* Create Test Container for Development
+
+  #+BEGIN_SRC sh
+    cd y_arena_valve_controller_ros
+    docker system prune -f
+    docker create -it --name devel ros:dashing bash
+    docker start -i devel
+    mkdir -p /ws/src/y_arena_valve_controller_ros
+    exit
+    docker cp . devel:/ws/src/y_arena_valve_controller_ros
+    docker start -i devel
+    source /opt/ros/dashing/setup.bash
+    cd /ws
+    colcon build
+  #+END_SRC

@@ -63,7 +63,7 @@ class YArenaValveController(Node):
         self.get_logger().info('arena_valves_open_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
         try:
             self.devs[msg.arena].set_valves_open(msg.valves.tolist())
-        except (IndexError, OSError) as e:
+        except (KeyError, OSError) as e:
             pass
 
     def get_arenas_available_callback(self, request, response):
