@@ -58,7 +58,7 @@ class YArenasTester(Node):
             msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
         self.publisher_.publish(msg)
         self.arena += 1
-        if self.arena = self.arena_count:
+        if self.arena == self.arena_count:
             self.cycle = (self.cycle + 1) % self.cycle_count
             self.arena = 0
 
