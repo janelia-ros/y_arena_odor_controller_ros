@@ -40,18 +40,27 @@ class YArenasTester(Node):
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.arena = 0
-        self.arena_count_max = 16
+        self.arena_count = 16
         self.valve_count = 3
-        self.valves_default = [2,2,2]
+        self.cycle = 0
+        self.cycle_count = 3
+        self.valves_open_cycle_0 = [2,2,2]
+        self.valves_open_cycle_1 = [0,0,0]
 
     def timer_callback(self):
         msg = ArenaValves()
         msg.arena = self.arena
-        msg.valves = self.valves_default
+        if self.cycle = 0:
+            msg.valves = self.valves_open_cycle_0
+        elif self.cycle = 1:
+            msg.valves = self.valves_open_cycle_1
+        else:
+            msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
         self.publisher_.publish(msg)
-        msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
-        self.publisher_.publish(msg)
-        self.arena = (self.arena + 1) % self.arena_count_max
+        self.arena += 1
+        if self.arena = self.arena_count:
+            self.cycle = (self.cycle + 1) % self.cycle_count
+            self.arena = 0
 
 def main(args=None):
     rclpy.init(args=args)
