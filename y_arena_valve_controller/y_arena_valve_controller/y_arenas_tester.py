@@ -42,10 +42,13 @@ class YArenasTester(Node):
         self.arena = 0
         self.arena_count_max = 16
         self.valve_count = 3
+        self.valves_default = [2,2,2]
 
     def timer_callback(self):
         msg = ArenaValves()
         msg.arena = self.arena
+        msg.valves = self.valves_default
+        self.publisher_.publish(msg)
         msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
         self.publisher_.publish(msg)
         self.arena = (self.arena + 1) % self.arena_count_max
