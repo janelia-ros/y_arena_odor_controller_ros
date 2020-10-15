@@ -50,9 +50,9 @@ class YArenasTester(Node):
     def timer_callback(self):
         msg = ArenaValves()
         msg.arena = self.arena
-        if self.cycle = 0:
+        if self.cycle == 0:
             msg.valves = self.valves_open_cycle_0
-        elif self.cycle = 1:
+        elif self.cycle == 1:
             msg.valves = self.valves_open_cycle_1
         else:
             msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
