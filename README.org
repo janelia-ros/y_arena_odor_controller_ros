@@ -16,6 +16,7 @@
 
   #+BEGIN_SRC sh
     cd y_arena_valve_controller_ros
+    docker stop $(docker ps -aq)
     docker system prune -f
     docker build -t y_arena_valve_controller:latest .
   #+END_SRC
@@ -70,6 +71,8 @@
     docker run --rm --net=host --pid=host -it y_arena_valve_controller:latest
     ros2 topic pub --once /arena_valves_open y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
     ros2 service call /get_arenas_available y_arena_interfaces/srv/GetArenas
+    ros2 run y_arena_valve_controller tester &
+    ros2 topic echo /arena_valves_open
   #+END_SRC
 
 * Create Test Container for Development

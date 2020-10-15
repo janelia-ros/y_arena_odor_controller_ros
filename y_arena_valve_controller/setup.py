@@ -34,6 +34,7 @@ setup(
     entry_points={
         'console_scripts': [
             'controller = y_arena_valve_controller.y_arena_valve_controller:main',
+            'tester = y_arena_valve_controller.y_arenas_tester:main',
         ],
     },
 )

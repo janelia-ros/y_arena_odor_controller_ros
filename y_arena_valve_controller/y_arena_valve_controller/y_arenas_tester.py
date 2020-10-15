@@ -29,55 +29,35 @@ import rclpy
 from rclpy.node import Node
 
 from y_arena_interfaces.msg import ArenaValves
-from y_arena_interfaces.srv import GetArenas
 
-from pathlib import Path
-from modular_client import ModularClients
+import random
 
-class YArenaValveController(Node):
+class YArenasTester(Node):
 
     def __init__(self):
-        super().__init__('y_arena_valve_controller')
-        arena_dev_paths = self._get_arena_dev_paths()
-        arena_dev_ports = [str(p) for p in arena_dev_paths]
-        arena_dev_numbers = self._get_arena_dev_numbers()
-        self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_numbers)
+        super().__init__('y_arenas_tester')
+        self.publisher_ = self.create_publisher(ArenaValves, '/arena_valves_open', 10)
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.arena = 0
+        self.arena_count_max = 16
+        self.valve_count = 3
 
-        self.arena_valves_open_sub = self.create_subscription(
-            ArenaValves,
-            '/arena_valves_open',
-            self.arena_valves_open_callback,
-            10)
-        self.arena_valves_open_sub
-
-        self.get_arenas_available_srv = self.create_service(GetArenas, 'get_arenas_available', self.get_arenas_available_callback)
-
-    def _get_arena_dev_paths(self):
-        return sorted(Path('/dev/arena').glob('*'))
-
-    def _get_arena_dev_numbers(self):
-        arena_dev_paths = self._get_arena_dev_paths()
-        return [int(p.name) for p in arena_dev_paths]
-
-    def arena_valves_open_callback(self, msg):
-        self.get_logger().info('arena_valves_open_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
-        try:
-            self.devs[msg.arena].set_valves_open(msg.valves.tolist())
-        except (KeyError, OSError) as e:
-            pass
-
-    def get_arenas_available_callback(self, request, response):
-        response.arenas = self._get_arena_dev_numbers()
-        return response
+    def timer_callback(self):
+        msg = ArenaValves()
+        msg.arena = self.arena
+        msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
+        self.publisher_.publish(msg)
+        self.arena = (self.arena + 1) % self.arena_count_max
 
 def main(args=None):
     rclpy.init(args=args)
 
-    y_arena_valve_controller = YArenaValveController()
+    y_arenas_tester = YArenasTester()
 
-    rclpy.spin(y_arena_valve_controller)
+    rclpy.spin(y_arenas_tester)
 
-    y_arena_valve_controller.destroy_node()
+    y_arenas_tester.destroy_node()
     rclpy.shutdown()
 
 
