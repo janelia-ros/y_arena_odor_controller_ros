@@ -28,27 +28,27 @@
 import rclpy
 from rclpy.node import Node
 
-from y_arena_interfaces.msg import ArenaValves
+from y_arena_interfaces.msg import ArenaOdors
 from y_arena_interfaces.srv import GetArenas
 
 from pathlib import Path
 from modular_client import ModularClients
 
-class YArenaValveController(Node):
+class YArenaOdorController(Node):
 
     def __init__(self):
-        super().__init__('y_arena_valve_controller')
+        super().__init__('y_arena_odor_controller')
         arena_dev_paths = self._get_arena_dev_paths()
         arena_dev_ports = [str(p) for p in arena_dev_paths]
         arena_dev_numbers = self._get_arena_dev_numbers()
         self.devs = ModularClients(use_ports=arena_dev_ports,keys=arena_dev_numbers)
 
-        self.arena_valves_open_sub = self.create_subscription(
-            ArenaValves,
-            '/arena_valves_open',
-            self.arena_valves_open_callback,
+        self.arena_odors_sub = self.create_subscription(
+            ArenaOdors,
+            '/arena_odors',
+            self.arena_odors_callback,
             10)
-        self.arena_valves_open_sub
+        self.arena_odors_sub
 
         self.get_arenas_available_srv = self.create_service(GetArenas, 'get_arenas_available', self.get_arenas_available_callback)
 
@@ -59,10 +59,10 @@ class YArenaValveController(Node):
         arena_dev_paths = self._get_arena_dev_paths()
         return [int(p.name) for p in arena_dev_paths]
 
-    def arena_valves_open_callback(self, msg):
-        self.get_logger().info('arena_valves_open_callback: arena = {0}, valves = {1}'.format(msg.arena,msg.valves))
+    def arena_odors_callback(self, msg):
+        self.get_logger().info('arena_odors_callback: arena = {0}, odors = {1}'.format(msg.arena,msg.odors))
         try:
-            self.devs[msg.arena].set_valves_open(msg.valves.tolist())
+            self.devs[msg.arena].set_arena_odors(msg.odors.tolist())
         except (KeyError, OSError) as e:
             pass
 
@@ -73,11 +73,11 @@ class YArenaValveController(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    y_arena_valve_controller = YArenaValveController()
+    y_arena_odor_controller = YArenaOdorController()
 
-    rclpy.spin(y_arena_valve_controller)
+    rclpy.spin(y_arena_odor_controller)
 
-    y_arena_valve_controller.destroy_node()
+    y_arena_odor_controller.destroy_node()
     rclpy.shutdown()
 
 

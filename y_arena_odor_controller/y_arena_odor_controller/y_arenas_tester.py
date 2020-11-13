@@ -28,7 +28,7 @@
 import rclpy
 from rclpy.node import Node
 
-from y_arena_interfaces.msg import ArenaValves
+from y_arena_interfaces.msg import ArenaOdors
 
 import random
 
@@ -36,26 +36,26 @@ class YArenasTester(Node):
 
     def __init__(self):
         super().__init__('y_arenas_tester')
-        self.publisher_ = self.create_publisher(ArenaValves, '/arena_valves_open', 10)
+        self.publisher_ = self.create_publisher(ArenaOdors, '/arena_odors', 10)
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.timer_callback)
         self.arena = 0
         self.arena_count = 16
-        self.valve_count = 3
+        self.odor_count = 3
         self.cycle = 0
         self.cycle_count = 3
-        self.valves_open_cycle_0 = [2,2,2]
-        self.valves_open_cycle_1 = [0,0,0]
+        self.odors_cycle_0 = [2,2,2]
+        self.odors_cycle_1 = [0,0,0]
 
     def timer_callback(self):
-        msg = ArenaValves()
+        msg = ArenaOdors()
         msg.arena = self.arena
         if self.cycle == 0:
-            msg.valves = self.valves_open_cycle_0
+            msg.odors = self.odors_cycle_0
         elif self.cycle == 1:
-            msg.valves = self.valves_open_cycle_1
+            msg.odors = self.odors_cycle_1
         else:
-            msg.valves = [random.randint(0,self.valve_count-1) for i in range(0,self.valve_count)]
+            msg.odors = [random.randint(0,self.odor_count-1) for i in range(0,self.odor_count)]
         self.publisher_.publish(msg)
         self.arena += 1
         if self.arena == self.arena_count:

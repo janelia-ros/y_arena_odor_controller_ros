@@ -2,7 +2,7 @@ import os
 from glob import glob
 from setuptools import setup
 
-package_name = 'y_arena_valve_controller'
+package_name = 'y_arena_odor_controller'
 
 setup(
     name=package_name,
@@ -29,12 +29,12 @@ setup(
         'Topic :: Software Development',
     ],
     license='BSD',
-    url='https://github.com/janelia-ros/y_arena_valve_controller',
+    url='https://github.com/janelia-ros/y_arena_odor_controller',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'controller = y_arena_valve_controller.y_arena_valve_controller:main',
-            'tester = y_arena_valve_controller.y_arenas_tester:main',
+            'controller = y_arena_odor_controller.y_arena_odor_controller:main',
+            'tester = y_arena_odor_controller.y_arenas_tester:main',
         ],
     },
 )

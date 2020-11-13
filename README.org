@@ -1,4 +1,4 @@
-#+TITLE: y_arena_controller_ros
+#+TITLE: y_arena_odor_controller_ros
 #+AUTHOR: Peter Polidoro
 #+EMAIL: peterpolidoro@gmail.com
 
@@ -6,7 +6,7 @@
   - Author :: Peter Polidoro
   - License :: BSD
 
-  Valve controller software for the Turner Lab Y-Arena rig.
+  Odor controller software for the Turner Lab Y-Arena rig.
 
 * Setup
 
@@ -15,10 +15,10 @@
 * Build Container
 
   #+BEGIN_SRC sh
-    cd y_arena_valve_controller_ros
+    cd y_arena_odor_controller_ros
     docker stop $(docker ps -aq)
     docker system prune -f
-    docker build -t y_arena_valve_controller:latest .
+    docker build -t y_arena_odor_controller:latest .
   #+END_SRC
 
 * Run Docker Container
@@ -41,8 +41,8 @@
            --device=/dev/ttyACM13 \
            --device=/dev/ttyACM14 \
            --device=/dev/ttyACM15 \
-           y_arena_valve_controller:latest \
-           ros2 launch y_arena_valve_controller controller.launch.py
+           y_arena_odor_controller:latest \
+           ros2 launch y_arena_odor_controller controller.launch.py
   #+END_SRC
 
 * Find Running Container Name
@@ -68,23 +68,23 @@
 * Run Another Docker Container to Test ROS Interfaces
 
   #+BEGIN_SRC sh
-    docker run --rm --net=host --pid=host -it y_arena_valve_controller:latest
-    ros2 topic pub --once /arena_valves_open y_arena_interfaces/msg/ArenaValves "{arena: 0, valves: [0, 1, 2]}"
+    docker run --rm --net=host --pid=host -it y_arena_odor_controller:latest
+    ros2 topic pub --once /arena_odors y_arena_interfaces/msg/ArenaOdors "{arena: 0, odors: [0, 1, 2]}"
     ros2 service call /get_arenas_available y_arena_interfaces/srv/GetArenas
-    ros2 run y_arena_valve_controller tester &
-    ros2 topic echo /arena_valves_open
+    ros2 run y_arena_odor_controller tester &
+    ros2 topic echo /arena_odors
   #+END_SRC
 
 * Create Test Container for Development
 
   #+BEGIN_SRC sh
-    cd y_arena_valve_controller_ros
+    cd y_arena_odor_controller_ros
     docker system prune -f
     docker create -it --name devel ros:dashing bash
     docker start -i devel
-    mkdir -p /ws/src/y_arena_valve_controller_ros
+    mkdir -p /ws/src/y_arena_odor_controller_ros
     exit
-    docker cp . devel:/ws/src/y_arena_valve_controller_ros
+    docker cp . devel:/ws/src/y_arena_odor_controller_ros
     docker start -i devel
     source /opt/ros/dashing/setup.bash
     cd /ws
