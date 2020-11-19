@@ -89,4 +89,5 @@
     source /opt/ros/dashing/setup.bash
     cd /ws
     colcon build
+    source install/setup.bash
   #+END_SRC
