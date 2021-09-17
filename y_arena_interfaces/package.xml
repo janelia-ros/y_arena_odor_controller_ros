@@ -4,7 +4,7 @@
   <name>y_arena_interfaces</name>
   <version>0.1.0</version>
   <description>ROS interfaces for the Turner Lab Y-Arena rig.</description>
-  <maintainer email="peterpolidoro@gmail.com">Peter Polidoro</maintainer>
+  <maintainer email="peter@polidoro.io">Peter Polidoro</maintainer>
   <license>BSD</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

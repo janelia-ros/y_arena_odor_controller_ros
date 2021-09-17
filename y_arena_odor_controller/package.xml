@@ -4,7 +4,7 @@
   <name>y_arena_odor_controller</name>
   <version>0.1.0</version>
   <description>Odor controller for the Turner Lab Y-Arena rig.</description>
-  <maintainer email="peterpolidoro@gmail.com">Peter Polidoro</maintainer>
+  <maintainer email="peter@polidoro.io">Peter Polidoro</maintainer>
   <license>BSD</license>
   <author>Peter Polidoro</author>
 

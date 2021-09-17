@@ -14,7 +14,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='root',
-    maintainer_email='peterpolidoro@gmail.com',
+    maintainer_email='peter@polidoro.io',
     description='Example Python publisher for Turner Lab Y-Arena rig.',
     license='BSD',
     tests_require=['pytest'],
